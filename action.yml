@@ -1,10 +1,17 @@
-name: 'Your name here'
-description: 'Provide a description here'
-author: 'Your name or organization here'
+name: 'GitHub Auto Assignment Request Action'
+description: 'Send review requests to team with Auto Assignment'
+author: 'Robert Wiesner'
+branding:
+  icon: 'check'
+  color: 'blue'
 inputs:
-  myInput:              # change this
-    description: 'input description here'
-    default: 'default value if applicable'
+  repo-token:
+    description: 'Token for the repo. Can be passed in using {{ secrets.GITHUB_TOKEN }}'
+    required: true
+  teams:
+    description: 'GitHub Teams with Auto Assignment'
+    required: true
+
 runs:
   using: 'node12'
   main: 'lib/main.js'
