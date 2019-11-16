@@ -19,3 +19,4 @@ jobs:
       with: 
         repo-token: ${{ secrets.TOKEN }}
         reviewers: "rowi1de"
+        team: "no-team"

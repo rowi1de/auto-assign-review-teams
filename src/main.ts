@@ -10,7 +10,7 @@ export async function run() {
 
     const client = new GitHub(repoToken)
     const reviewers = core.getInput('reviewers').split(',').map(a => a.trim())
-    const teamReviewers = core.getInput('team-reviewers').split(',').map(a => a.trim())
+    const teamReviewers = core.getInput('teams').split(',').map(a => a.trim())
 
     if(issue.number === null){
       return
