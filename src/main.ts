@@ -12,6 +12,10 @@ export async function run() {
     const reviewers = core.getInput('reviewers').split(',').map(a => a.trim())
     const teamReviewers = core.getInput('team-reviewers').split(',').map(a => a.trim())
 
+    if(issue.number === null){
+      return
+    }
+
     await client.pulls.createReviewRequest(
       {
         owner: issue.owner,
