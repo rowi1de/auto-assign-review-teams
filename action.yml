@@ -1,5 +1,5 @@
-name: 'GitHub Auto Assignment Request Action'
-description: 'Send review requests to team with Auto Assignment'
+name: 'GitHub Team Request Action'
+description: 'Send review requests to team (with Auto Assignment)'
 author: 'Robert Wiesner'
 branding:
   icon: 'check'
@@ -8,9 +8,12 @@ inputs:
   repo-token:
     description: 'Token for the repo. Can be passed in using {{ secrets.GITHUB_TOKEN }}'
     required: true
-  teams:
-    description: 'GitHub Teams with Auto Assignment'
+  team-reviewers:
+    description: 'Teams (Optional with Auto Assignment)'
     required: true
+  reviewers:
+    description: 'Individual Reviwers'
+    required: false
 
 runs:
   using: 'node12'

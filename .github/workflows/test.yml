@@ -17,4 +17,5 @@ jobs:
     - run: npm test
     - uses: ./
       with: 
-        milliseconds: 1000
+        repo-token: ${{ secrets.TOKEN }}
+        reviewers: "rowi1de"
