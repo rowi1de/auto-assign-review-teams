@@ -12,9 +12,15 @@ describe('Team', () => {
     process.env['GITHUB_EVENT_PATH'] = path.join(__dirname, 'payload.json')
 
     nock('https://api.github.com')
+    .persist()
+    .get('/repos/foo/bar/pulls/10')
+    .reply(200)
+
+    nock('https://api.github.com')
       .persist()
       .post('/repos/foo/bar/pulls/10/requested_reviewers')
       .reply(200)
+      
     const main = require('../src/main')
 
     await main.run()
@@ -32,9 +38,15 @@ describe('Reviewer', () => {
     process.env['GITHUB_EVENT_PATH'] = path.join(__dirname, 'payload.json')
 
     nock('https://api.github.com')
+    .persist()
+    .get('/repos/foo/bar/pulls/10')
+    .reply(200)
+
+    nock('https://api.github.com')
       .persist()
       .post('/repos/foo/bar/pulls/10/requested_reviewers')
       .reply(200)
+
     const main = require('../src/main')
 
     await main.run()
