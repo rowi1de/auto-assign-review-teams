@@ -8,12 +8,20 @@ export async function run() {
       repoToken = core.getInput('repo-token', { required: true }),
       issue: { owner: string; repo: string; number: number } = context.issue
 
-    const client = new GitHub(repoToken)
-    const reviewers = core.getInput('reviewers').split(',').map(a => a.trim())
-    const teamReviewers = core.getInput('teams').split(',').map(a => a.trim())
-
-    if(issue.number === null){
+    if (issue == null || issue.number == null) {
+      console.log('No pull request context, skipping')
       return
+    }
+
+    const client = new GitHub(repoToken)
+    const teams = core.getInput('teams').split(',').map(a => a.trim())
+    const persons = core.getInput('persons').split(',').map(a => a.trim())
+    
+    if(teams.length == 0 && persons.length == 0){
+      console.error("Please specify 'teams' and/or 'persons'")
+    }
+    else{
+      console.log("Adding teams: " + teams + ", persons: " + persons)
     }
 
     await client.pulls.createReviewRequest(
@@ -21,11 +29,10 @@ export async function run() {
         owner: issue.owner,
         repo: issue.repo,
         pull_number: issue.number,
-        reviewers: reviewers,
-        team_reviewers: teamReviewers
+        reviewers: persons,
+        team_reviewers: teams
       }
     )
-
   } catch (error) {
     core.setFailed(error.message)
     throw error

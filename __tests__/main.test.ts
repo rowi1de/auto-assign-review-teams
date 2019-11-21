@@ -25,7 +25,7 @@ describe('Reviewer', () => {
   it('It requests a review to a person', async () => {
     const reviewer = 'person'
     const repoToken = 'token'
-    process.env['INPUT_REVIEWER'] = reviewer
+    process.env['INPUT_PERSONS'] = reviewer
     process.env['INPUT_REPO-TOKEN'] = repoToken
 
     process.env['GITHUB_REPOSITORY'] = 'foo/bar'
