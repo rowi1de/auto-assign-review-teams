@@ -16,6 +16,7 @@ export async function run() {
     //See https://octokit.github.io/rest.js/
     const client = new GitHub(repoToken)
 
+    const includeDraft : Boolean =  Boolean(core.getInput('include-draft') || false) 
     const pull = await client.pulls.get(
       {
         owner: issue.owner,
@@ -24,8 +25,8 @@ export async function run() {
       }
     )
     //Skip DRAFT PRs
-    if(pull.data.mergeable == false){
-      console.log('DRAFT Pull Request, not assigning Persons')
+    if(pull.data.mergeable == false && !includeDraft){
+      console.log('DRAFT Pull Request, not assigning PRs.')
     }
 
     const teams = core.getInput('teams').split(',').map(a => a.trim())

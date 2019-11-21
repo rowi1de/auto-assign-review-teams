@@ -14,6 +14,9 @@ inputs:
   persons:
     description: 'Individual Reviwers - person1, person2'
     required: false
+  include-draft:
+    description: 'If set to true, DRAFT PRs will also be covered (default=false)'
+    required: false
 
 runs:
   using: 'node12'
