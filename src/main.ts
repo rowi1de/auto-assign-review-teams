@@ -8,8 +8,8 @@ export async function run() {
       repoToken = core.getInput('repo-token', { required: true }),
       issue: { owner: string; repo: string; number: number } = context.issue
 
-    if (issue == null) {
-      console.log('No pull request context skipping')
+    if (issue == null || issue.number == null) {
+      console.log('No pull request context, skipping')
       return
     }
 
