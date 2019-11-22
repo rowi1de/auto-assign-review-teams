@@ -1,4 +1,4 @@
-name: 'Auto Assign Reviewers'
+name: 'Auto Assign Review Teams'
 description: 'Send review requests to teams (with Auto Assignment) or persons'
 author: 'Robert Wiesner'
 branding:
