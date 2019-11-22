@@ -1,5 +1,5 @@
-name: 'GitHub Team Request Action'
-description: 'Send review requests to teams (with Auto Assignment)'
+name: 'Auto Assign Reviwers'
+description: 'Send review requests to teams (with Auto Assignment) or persons'
 author: 'Robert Wiesner'
 branding:
   icon: 'check'
@@ -9,7 +9,7 @@ inputs:
     description: 'Token for the repo. Can be passed in using {{ secrets.GITHUB_TOKEN }}'
     required: true
   teams:
-    description: 'Teams (With Auto Assignment) - team1, team 2'
+    description: 'Teams (works best with Auto Assignment) - team1, team 2'
     required: true
   persons:
     description: 'Individual Reviwers - person1, person2'
