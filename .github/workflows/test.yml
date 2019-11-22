@@ -17,6 +17,6 @@ jobs:
     - run: npm test
     - uses: ./
       with: 
-        repo-token: ${{ secrets.TOKEN }}
+        repo-token: ${{ secrets.GITHUB_TOKEN }}
         persons: "rowi1de"
         teams: "no-team"

@@ -8,7 +8,8 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/typescript-action@releases/v1
+    - uses: actions/typescript-action@master
       with:
-        repo-token: ${{ secrets.TOKEN }}
-        teams: "test"
+        repo-token: ${{ secrets.GITHUB_TOKEN }}
+        persons: "rowi1de"
+        teams: "no-team"
