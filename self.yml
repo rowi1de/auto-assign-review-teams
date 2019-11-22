@@ -10,5 +10,6 @@ jobs:
     steps:
     - uses: actions/typescript-action@releases/v1
       with:
-        repo-token: ${{ secrets.TOKEN }}
-        teams: "test"
+        repo-token: ${{ secrets.GITUB_TOKEN }}
+        persons: "rowi1de"
+        teams: "no-team"
