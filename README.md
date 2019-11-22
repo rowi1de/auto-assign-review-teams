@@ -1,7 +1,7 @@
 
 # Auto Assign Reviwers GitHub Action (v0.0.1)
 - Assign individual persons or member of [GitHub Teams](https://help.github.com/en/github/setting-up-and-managing-organizations-and-teams/organizing-members-into-teams) 
-- Team Assignment Works best, if[code review assignment](https://help.github.com/en/github/setting-up-and-managing-organizations-and-teams/managing-code-review-assignment-for-your-team) for the team is enabled
+- Team Assignment Works best, if [code review assignment](https://help.github.com/en/github/setting-up-and-managing-organizations-and-teams/managing-code-review-assignment-for-your-team) for the team is enabled
 
 ## Example Usage
 ```yaml
