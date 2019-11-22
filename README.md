@@ -14,7 +14,7 @@ jobs:
   assign-reviewers:
     runs-on: ubuntu-latest
     steps:
-    - name: "Assign Team and Perons"
+    - name: "Assign Team and Persons"
       uses: rowi1de/typescript-action
       with:
         repo-token: ${{ secrets.GITHUB_TOKEN }}
