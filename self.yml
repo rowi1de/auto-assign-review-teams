@@ -10,6 +10,6 @@ jobs:
     steps:
     - uses: actions/typescript-action@master
       with:
-        repo-token: ${{ secrets.GITUB_TOKEN }}
+        repo-token: ${{ secrets.GITHUB_TOKEN }}
         persons: "rowi1de"
         teams: "no-team"
