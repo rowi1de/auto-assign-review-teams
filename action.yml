@@ -1,4 +1,4 @@
-name: 'Auto Assign Reviwers'
+name: 'Auto Assign Reviewers'
 description: 'Send review requests to teams (with Auto Assignment) or persons'
 author: 'Robert Wiesner'
 branding:
@@ -12,7 +12,7 @@ inputs:
     description: 'Teams (works best with Auto Assignment) - team1, team 2'
     required: true
   persons:
-    description: 'Individual Reviwers - person1, person2'
+    description: 'Individual Reviewers - person1, person2'
     required: false
   include-draft:
     description: 'If set to true, DRAFT PRs will also be covered (default=false)'
