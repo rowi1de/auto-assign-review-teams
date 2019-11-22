@@ -14,7 +14,7 @@ export async function run() {
     }
 
     //See https://octokit.github.io/rest.js/
-    const client = new GitHub(repoToken)
+    const client = new GitHub("Bearer " + repoToken)
 
     const includeDraft : Boolean =  Boolean(core.getInput('include-draft') || false) 
     const pull = await client.pulls.get(
