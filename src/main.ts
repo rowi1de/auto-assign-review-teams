@@ -7,6 +7,7 @@ export async function run() {
     const
       repoToken = core.getInput('repo-token', { required: true }),
       issue: { owner: string; repo: string; number: number } = context.issue
+      core.setSecret(repoToken);
 
     if (issue == null || issue.number == null) {
       console.log('No pull request context, skipping')
