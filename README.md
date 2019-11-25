@@ -15,7 +15,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: "Assign Team and Persons"
-      uses: rowi1de/typescript-action
+      uses: rowi1de/auto-assign-review-teams@master
       with:
         repo-token: ${{ secrets.GITHUB_TOKEN }}
         teams: "gitub-org-team"     # only works for GitHub Organisation/Teams
