@@ -1,12 +1,12 @@
 import * as core from '@actions/core';
-import { context, GitHub } from '@actions/github'
+import * as github from '@actions/github';
 
 
 export async function run() {
   try {
     const
       repoToken = core.getInput('repo-token', { required: true }),
-      issue: { owner: string; repo: string; number: number } = context.issue
+      issue: { owner: string; repo: string; number: number } = github.context.issue
       core.setSecret(repoToken);
 
     if (issue == null || issue.number == null) {
@@ -15,7 +15,7 @@ export async function run() {
     }
 
     //See https://octokit.github.io/rest.js/
-    const client = new GitHub(repoToken)
+    const client = new github.GitHub(repoToken)
 
     const includeDraft : Boolean =  Boolean(core.getInput('include-draft') || false) 
     const pull = await client.pulls.get(
