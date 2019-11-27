@@ -13,7 +13,7 @@ jobs:
     - uses: actions/checkout@v1
 
     - run: npm ci
-    - runpm run build
+    - run: npm run build
     - run: npm test
     - uses: ./
       with: 
