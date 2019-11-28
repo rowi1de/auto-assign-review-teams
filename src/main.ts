@@ -26,7 +26,7 @@ export async function run() {
       }
     )
     //Skip DRAFT PRs
-    if(pull.data.mergeable == false && !includeDraft){
+    if(pull.data.draft == false || includeDraft){
       console.log('DRAFT Pull Request, not assigning PRs.')
       return
     }
