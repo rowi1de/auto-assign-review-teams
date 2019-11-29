@@ -8,7 +8,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/auto-assign-review-teams@v0.0.2
+    - uses: actions/auto-assign-review-teams@v0.0.3
       with:
         repo-token: ${{ secrets.GITHUB_TOKEN }}
         persons: "rowi1de"
