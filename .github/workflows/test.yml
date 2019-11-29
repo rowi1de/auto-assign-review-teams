@@ -18,5 +18,5 @@ jobs:
     - uses: ./
       with: 
         repo-token: ${{ secrets.GITHUB_TOKEN }}
-        persons: "rowi1de, sinchang"
+        persons: "rowi1de"
         teams: "no-team"
