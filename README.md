@@ -18,7 +18,8 @@ jobs:
       uses: rowi1de/auto-assign-review-teams@v0.0.4
       with:
         repo-token: ${{ secrets.GITHUB_TOKEN }}
-        teams: "gitub-org-team"     # only works for GitHub Organisation/Teams
-        persons: "rowi1de"          # add individual persons here 
-        include-draft: false        # Draft PRs will be skipped by default, enable if you need it 
+        teams: "gitub-org-team"         # only works for GitHub Organisation/Teams
+        persons: "rowi1de"              # add individual persons here 
+        include-draft: false            # Draft PRs will be skipped (default: false)
+        skip-with-manual-reviewers: 0   # Skip this action, if the number of reviwers was already assigned (default: 0)
 ```

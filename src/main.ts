@@ -25,9 +25,17 @@ export async function run() {
         pull_number: issue.number
       }
     )
+
     //Skip DRAFT PRs
     if(pull.data.draft == false || includeDraft){
-      console.log('DRAFT Pull Request, not assigning PRs.')
+      console.log('Skipped: DRAFT Pull Request, not assigning PR.')
+      return
+    }
+
+    const skipWithNumberOfReviewers : number =  Number(core.getInput('skip-with-manual-reviewers') || Number.MAX_VALUE) 
+    const numberOfReviwers = pull.data.requested_reviewers.length
+    if(numberOfReviwers >= skipWithNumberOfReviewers){
+      console.log('Skipped: Already " + numberOfReviwers + " assigned reviwers, not assigning PR.')
       return
     }
 
