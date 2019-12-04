@@ -33,7 +33,7 @@ export async function run() {
     }
 
     const skipWithNumberOfReviewers : number =  Number(core.getInput('skip-with-manual-reviewers') || Number.MAX_VALUE) 
-    const numberOfReviwers = pull.data.requested_reviewers.length
+    const numberOfReviwers = pull.data.requested_reviewers?.length || 0
     if(numberOfReviwers >= skipWithNumberOfReviewers){
       console.log('Skipped: Already " + numberOfReviwers + " assigned reviwers, not assigning PR.')
       return
