@@ -40,7 +40,11 @@ export async function run() {
     }
 
     const teams = core.getInput('teams').split(',').map(a => a.trim())
-    const persons = core.getInput('persons').split(',').map(a => a.trim())
+    const persons = core.getInput('persons')
+      .split(',')
+      // filter out PR creator
+      .filter(user => user !== pull.data.user.login)
+      .map(a => a.trim())
     
     if(teams.length == 0 && persons.length == 0){
       core.setFailed("Please specify 'teams' and/or 'persons'")
