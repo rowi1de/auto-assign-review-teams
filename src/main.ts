@@ -43,7 +43,7 @@ export async function run() {
     const persons = core.getInput('persons')
       .split(',')
       // filter out PR creator
-      .filter(user => user !== pull.data.user.login)
+      .filter(user => user !== issue.owner)
       .map(a => a.trim())
     
     if(teams.length == 0 && persons.length == 0){
