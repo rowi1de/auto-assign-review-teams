@@ -61,7 +61,7 @@ export async function run() {
             reviewers: persons
           }
       )
-      console.log("Request Status:" + personResponse.status + ", Persons: " + personResponse.data.requested_reviewers.map(r => r.login).join(','))
+      console.log("Request Status:" + personResponse.status + ", Persons: " + personResponse?.data?.requested_reviewers?.map(r => r.login).join(','))
     }
 
     if(teams.length > 0) {
@@ -74,7 +74,7 @@ export async function run() {
             team_reviewers: teams
           }
       )
-      console.log("Request Status:" + teamResponse.status + ", Teams:" + teamResponse.data.requested_teams.map(t => t.slug).join(','))
+      console.log("Request Status:" + teamResponse.status + ", Teams: " + teamResponse?.data?.requested_teams?.map(t => t.slug).join(','))
     }
   } catch (error) {
     core.setFailed(error.message)

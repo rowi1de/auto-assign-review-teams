@@ -19,7 +19,7 @@ describe('Team', () => {
     nock('https://api.github.com')
       .persist()
       .post('/repos/foo/bar/pulls/10/requested_reviewers')
-      .reply(200)
+      .reply(200,  { requested_teams: [{'slug':'team'}] })
       
     const main = require('../src/main')
 
@@ -45,7 +45,7 @@ describe('Reviewer', () => {
     nock('https://api.github.com')
       .persist()
       .post('/repos/foo/bar/pulls/10/requested_reviewers')
-      .reply(200)
+      .reply(200,  { requested_reviewers: [{'login':'person'}] })
 
     const main = require('../src/main')
 
