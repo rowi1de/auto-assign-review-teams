@@ -33,9 +33,9 @@ export async function run() {
     }
 
     const skipWithNumberOfReviewers : number =  Number(core.getInput('skip-with-manual-reviewers') || Number.MAX_VALUE) 
-    const numberOfReviwers = pull.data.requested_reviewers?.length || 0
-    if(numberOfReviwers >= skipWithNumberOfReviewers){
-      console.log('Skipped: Already ' + numberOfReviwers + ' assigned reviwers, not assigning PR.')
+    const numberOfReviewers = pull.data.requested_reviewers?.length || 0
+    if(numberOfReviewers >= skipWithNumberOfReviewers){
+      console.log('Skipped: Already ' + numberOfReviewers + ' assigned reviewers, not assigning PR.')
       return
     }
 
@@ -50,19 +50,32 @@ export async function run() {
       core.setFailed("Please specify 'teams' and/or 'persons'")
       return
     }
-    else{
-      console.log("Adding teams: " + teams + ", persons: " + persons)
+
+    if(persons.length > 0) {
+      console.log("Adding persons: " + persons)
+      const personResponse = await client.pulls.createReviewRequest(
+          {
+            owner: issue.owner,
+            repo: issue.repo,
+            pull_number: issue.number,
+            reviewers: persons
+          }
+      )
+      console.log("Request Status:" + personResponse.status + ", Persons: " + personResponse.data.requested_reviewers.map(r => r.login).join(','))
     }
 
-    await client.pulls.createReviewRequest(
-      {
-        owner: issue.owner,
-        repo: issue.repo,
-        pull_number: issue.number,
-        reviewers: persons,
-        team_reviewers: teams
-      }
-    )
+    if(teams.length > 0) {
+      console.log("Adding teams: " + teams)
+      const teamResponse = await client.pulls.createReviewRequest(
+          {
+            owner: issue.owner,
+            repo: issue.repo,
+            pull_number: issue.number,
+            team_reviewers: teams
+          }
+      )
+      console.log("Request Status:" + teamResponse.status + ", Teams:" + teamResponse.data.requested_teams.map(t => t.slug).join(','))
+    }
   } catch (error) {
     core.setFailed(error.message)
     throw error
