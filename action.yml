@@ -17,6 +17,9 @@ inputs:
   include-draft:
     description: 'If set to true, DRAFT PRs will also be covered (default=false)'
     required: false
+  skip-with-manual-reviewers:
+    description: 'If the given nubmer of reviewers is already assigned, auto assign will be skipped'
+    required: false
 
 runs:
   using: 'node12'
