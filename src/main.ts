@@ -68,18 +68,30 @@ export async function run() {
       )
       console.log("Request Status:" + personResponse.status + ", Persons: " + personResponse?.data?.requested_reviewers?.map(r => r.login).join(','))
     }
+                  
+    // Making sure that org is provided if user wishes to use teams                  
+    const org : string =  core.getInput('org')
+    if (teams.length > 0 && org == null) {
+      core.setFailed("Please specify 'org' if you want to use Teams")
+      return
+    }
 
     if(teams.length > 0) {
-      console.log("Adding teams: " + teams)
-      const teamResponse = await client.pulls.createReviewRequest(
+      // Picking out 1 person from first team listed
+      console.log("Selecting from first team provided: " + teams[0])
+      const members = await client.teams.listMembersInOrg({org,teams[0]})
+      console.log("Request Status for getting team members:" + members.status)
+      
+      const person = members[Math.floor(Math.random() * members.length)].data.login
+      const personResponse = await client.pulls.createReviewRequest(
           {
             owner: issue.owner,
             repo: issue.repo,
             pull_number: issue.number,
-            team_reviewers: teams
+            reviewers: person
           }
       )
-      console.log("Request Status:" + teamResponse.status + ", Teams: " + teamResponse?.data?.requested_teams?.map(t => t.slug).join(','))
+      console.log("Request Status:" + personResponse.status + ", Person from First Team: " + personResponse?.data?.requested_reviewers?.map(t => t.slug).join(','))
     }
   } catch (error) {
     core.setFailed(error.message)
