@@ -1,5 +1,5 @@
-name: 'Auto Assign Review Teams'
-description: 'Send review requests to teams (with Auto Assignment) or persons'
+name: 'Auto Assign Review To Person from List'
+description: 'This is a fork from rowi1de/auto-assign-review-teams: Send review requests to teams (with Auto Assignment) or persons. We added one small modification: allowing for only 1 person to be picked out from the persons list.'
 author: 'Robert Wiesner'
 branding:
   icon: 'check'
@@ -12,7 +12,7 @@ inputs:
     description: 'Teams (works best with Auto Assignment) - team1, team 2'
     required: true
   persons:
-    description: 'Individual Reviewers - person1, person2'
+    description: 'Individual Reviewers - person1, person2. In the VantaInc forked version, only 1 person from this list will be picked.'
     required: false
   include-draft:
     description: 'If set to true, DRAFT PRs will also be covered (default=false)'
