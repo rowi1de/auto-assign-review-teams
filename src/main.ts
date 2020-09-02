@@ -52,13 +52,18 @@ export async function run() {
     }
 
     if(persons.length > 0) {
-      console.log("Adding persons: " + persons)
+    
+      // Picking out 1 person from list of persons
+      console.log("Picking from: " + persons)
+      const person = persons[Math.floor(Math.random() * persons.length)];
+      console.log("Adding person: " + person)
+    
       const personResponse = await client.pulls.createReviewRequest(
           {
             owner: issue.owner,
             repo: issue.repo,
             pull_number: issue.number,
-            reviewers: persons
+            reviewers: person
           }
       )
       console.log("Request Status:" + personResponse.status + ", Persons: " + personResponse?.data?.requested_reviewers?.map(r => r.login).join(','))
