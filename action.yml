@@ -1,5 +1,5 @@
-name: 'Auto Assign Review To Person from List'
-description: 'This is a fork from rowi1de/auto-assign-review-teams: Send review requests to teams (with Auto Assignment) or persons. We added one small modification: allowing for only 1 person to be picked out from the persons list.'
+name: 'Auto Assign Review To One Person from List or Github Team'
+description: 'This is a fork from rowi1de/auto-assign-review-teams: Send review requests to teams (with Auto Assignment) or persons. We added one small modification: allowing for only 1 person to be picked out from the persons list or each of the Github Teams listed.'
 author: 'Robert Wiesner'
 branding:
   icon: 'check'
@@ -9,7 +9,7 @@ inputs:
     description: 'Token for the repo. Can be passed in using {{ secrets.GITHUB_TOKEN }}'
     required: true
   teams:
-    description: 'Teams (works best with Auto Assignment) - team1, team 2'
+    description: 'Teams (works best with Auto Assignment) - team1, team 2. In the VantaInc forked version, only 1 person from each team will be picked.'
     required: true
   persons:
     description: 'Individual Reviewers - person1, person2. In the VantaInc forked version, only 1 person from this list will be picked.'
