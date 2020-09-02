@@ -8,6 +8,9 @@ inputs:
   repo-token:
     description: 'Token for the repo. Can be passed in using {{ secrets.GITHUB_TOKEN }}'
     required: true
+  org:
+    description: 'Org (for the VantaInc forked version)'
+    required: true
   teams:
     description: 'Teams (works best with Auto Assignment) - team1, team 2. In the VantaInc forked version, only 1 person from the first team will be picked.'
     required: true
