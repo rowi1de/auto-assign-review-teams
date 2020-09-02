@@ -4,21 +4,22 @@ on:
   push:
     branches:
       - master
-      - 'releases/*'
+      - "releases/*"
 
 jobs:
   test:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v1
+      - uses: actions/checkout@v1
 
-    - run: npm ci
-    - run: npm run build
-    - run: npm test
-    - uses: ./
-      with: 
-        repo-token: ${{ secrets.GITHUB_TOKEN }}
-        persons: "rowi1de"
-        teams: "no-team"
-        include-draft: false
-        skip-with-manual-reviewers: 1
+      - run: npm ci
+      - run: npm run build
+      - run: npm test
+      - uses: ./
+        with:
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          persons: "michellelimxuanli"
+          org: "VantaInc"
+          teams: "code-reviewers"
+          include-draft: false
+          skip-with-manual-reviewers: 1
