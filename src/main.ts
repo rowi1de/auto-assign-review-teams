@@ -8,6 +8,10 @@ export async function run() {
         github.context.issue;
     core.setSecret(repoToken);
 
+    const pickOneFromPersonsOrTeam: Boolean = Boolean(
+      core.getInput("pick-one-from-persons-or-team") || false
+    );
+
     if (issue == null || issue.number == null) {
       console.log("No pull request context, skipping");
       return;
@@ -61,16 +65,17 @@ export async function run() {
     }
 
     if (persons.length > 0) {
-      // Picking out 1 person from list of persons
       console.log("Picking from: " + persons);
-      const person = [persons[Math.floor(Math.random() * persons.length)]];
-      console.log("Adding person: " + person);
+      const reviewers = pickOneFromPersonsOrTeam
+        ? [persons[Math.floor(Math.random() * persons.length)]]
+        : persons;
+      console.log("Adding person(s): " + reviewers);
 
       const personResponse = await client.pulls.requestReviewers({
         owner: issue.owner,
         repo: issue.repo,
         pull_number: issue.number,
-        reviewers: person,
+        reviewers: reviewers,
       });
       console.log(
         "Request Status:" +
@@ -82,39 +87,60 @@ export async function run() {
       );
     }
 
-    // Making sure that org is provided if user wishes to use teams
+    // Making sure that org is provided if user turns on pick-one-from-persons-or-team option and to use teams
     const org: string = core.getInput("org");
-    if (teams.length > 0 && org == null) {
-      core.setFailed("Please specify 'org' if you want to use Teams");
+    if (pickOneFromPersonsOrTeam && teams.length > 0 && org == null) {
+      core.setFailed(
+        "Please specify 'org' if you want to pick one from persons or teams and use Teams"
+      );
       return;
     }
 
     if (teams.length > 0) {
-      // Picking out 1 person from first team listed
-      console.log("Selecting from first team provided: " + teams[0]);
-      const members = await client.teams.listMembersInOrg({
-        org: org,
-        team_slug: teams[0],
-      });
-      console.log("Request Status for getting team members:" + members.status);
+      if (pickOneFromPersonsOrTeam) {
+        // Picking out 1 person from first team listed
+        console.log("Selecting from first team provided: " + teams[0]);
+        const members = await client.teams.listMembersInOrg({
+          org: org,
+          team_slug: teams[0],
+        });
+        console.log(
+          "Request Status for getting team members:" + members.status
+        );
 
-      const person = [
-        members.data[Math.floor(Math.random() * members.data.length)].login,
-      ];
-      const personResponse = await client.pulls.requestReviewers({
-        owner: issue.owner,
-        repo: issue.repo,
-        pull_number: issue.number,
-        reviewers: person,
-      });
-      console.log(
-        "Request Status:" +
-          personResponse.status +
-          ", Person from First Team: " +
-          personResponse?.data?.requested_reviewers
-            ?.map((r) => r.login)
-            .join(",")
-      );
+        const person = [
+          members.data[Math.floor(Math.random() * members.data.length)].login,
+        ];
+        const personResponse = await client.pulls.requestReviewers({
+          owner: issue.owner,
+          repo: issue.repo,
+          pull_number: issue.number,
+          reviewers: person,
+        });
+
+        console.log(
+          "Request Status:" +
+            personResponse.status +
+            ", Person from First Team: " +
+            personResponse?.data?.requested_reviewers
+              ?.map((r) => r.login)
+              .join(",")
+        );
+      } else {
+        console.log("Adding teams: " + teams);
+        const teamResponse = await client.pulls.requestReviewers({
+          owner: issue.owner,
+          repo: issue.repo,
+          pull_number: issue.number,
+          team_reviewers: teams,
+        });
+        console.log(
+          "Request Status:" +
+            teamResponse.status +
+            ", Teams: " +
+            teamResponse?.data?.requested_teams?.map((t) => t.slug).join(",")
+        );
+      }
     }
   } catch (error) {
     core.setFailed(error.message);
