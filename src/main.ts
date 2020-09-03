@@ -108,8 +108,13 @@ export async function run() {
           "Request Status for getting team members:" + members.status
         );
 
+        // filter out PR creator
+        const eligibleMembers = members.data
+          .filter((user) => user.login !== issue.owner)
+          .map((a) => a.login);
+
         const person = [
-          members.data[Math.floor(Math.random() * members.data.length)].login,
+          eligibleMembers[Math.floor(Math.random() * eligibleMembers.length)],
         ];
         const personResponse = await client.pulls.requestReviewers({
           owner: issue.owner,
