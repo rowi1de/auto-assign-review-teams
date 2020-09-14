@@ -19,6 +19,6 @@ jobs:
       with: 
         repo-token: ${{ secrets.GITHUB_TOKEN }}
         persons: "rowi1de"
-        teams: "no-team"
+        # teams: "no-team"
         include-draft: false
         skip-with-manual-reviewers: 1
