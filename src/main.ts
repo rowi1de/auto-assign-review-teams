@@ -6,6 +6,8 @@ export async function run() {
     const repoToken = core.getInput("repo-token", { required: true }),
       issue: { owner: string; repo: string; number: number } =
         github.context.issue;
+    console.log("DEBUG LINES 1: context");
+    console.log(github.context);
     core.setSecret(repoToken);
 
     const pickOneFromPersonsOrTeam: Boolean = Boolean(
@@ -28,6 +30,8 @@ export async function run() {
       repo: issue.repo,
       pull_number: issue.number,
     });
+    console.log("PuLL DATA");
+    console.log(pull.data);
 
     //Skip DRAFT PRs
     if (pull.data.draft && !includeDraft) {
