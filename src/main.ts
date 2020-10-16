@@ -6,8 +6,6 @@ export async function run() {
     const repoToken = core.getInput("repo-token", { required: true }),
       issue: { owner: string; repo: string; number: number } =
         github.context.issue;
-    console.log("DEBUG LINES 1: context");
-    console.log(github.context);
     core.setSecret(repoToken);
 
     const pickOneFromPersonsOrTeam: Boolean = Boolean(
@@ -30,8 +28,6 @@ export async function run() {
       repo: issue.repo,
       pull_number: issue.number,
     });
-    console.log("PuLL DATA");
-    console.log(pull.data);
 
     //Skip DRAFT PRs
     if (pull.data.draft && !includeDraft) {
@@ -111,15 +107,11 @@ export async function run() {
         console.log(
           "Request Status for getting team members:" + members.status
         );
-        console.log("DEBUG LINES");
-        console.log(members.data);
-        console.log({ issue });
-        // filter out PR creator
+        // filter out PR author
         const eligibleMembers = members.data
-          .filter((user) => user.login !== issue.owner)
+          .filter((user) => user.login !== pull.data.user.login)
           .map((a) => a.login);
-
-        console.log({ eligibleMembers });
+        console.log("Picking reviewer from eligible members:", eligibleMembers);
 
         const person = [
           eligibleMembers[Math.floor(Math.random() * eligibleMembers.length)],
