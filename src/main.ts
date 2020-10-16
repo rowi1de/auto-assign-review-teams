@@ -107,11 +107,15 @@ export async function run() {
         console.log(
           "Request Status for getting team members:" + members.status
         );
-
+        console.log("DEBUG LINES");
+        console.log(members.data);
+        console.log({ issue });
         // filter out PR creator
         const eligibleMembers = members.data
           .filter((user) => user.login !== issue.owner)
           .map((a) => a.login);
+
+        console.log({ eligibleMembers });
 
         const person = [
           eligibleMembers[Math.floor(Math.random() * eligibleMembers.length)],
