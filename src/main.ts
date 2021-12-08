@@ -76,8 +76,9 @@ export async function run() {
       )
       console.log("Request Status:" + teamResponse.status + ", Teams: " + teamResponse?.data?.requested_teams?.map(t => t.slug).join(','))
     }
-  } catch (error:any) {
-    core.setFailed(error)
+  } catch (error) {
+    console.error(error)
+    core.setFailed("Unknown error" + error)
     throw error
   }
 }
