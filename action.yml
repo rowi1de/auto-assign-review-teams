@@ -1,26 +1,32 @@
-name: 'Auto Assign Review Teams'
-description: 'Send review requests to teams (with Auto Assignment) or persons'
-author: 'Robert Wiesner'
+name: "Auto Assign Review Teams"
+description: "Send review requests to teams (with Auto Assignment) or persons"
+author: "Robert Wiesner"
 branding:
-  icon: 'check'
-  color: 'blue'
+  icon: "check"
+  color: "blue"
 inputs:
   repo-token:
-    description: 'Token for the repo. Can be passed in using {{ secrets.GITHUB_TOKEN }}'
+    description: "Token for the repo. Can be passed in using {{ secrets.GITHUB_TOKEN }}"
     required: true
   teams:
-    description: 'Teams (works best with Auto Assignment) - team1, team 2'
+    description: "Teams (works best with Auto Assignment) - team1, team 2.  If pick-one-from-persons-or-team is true, only 1 person from the first team will be picked."
     required: true
   persons:
-    description: 'Individual Reviewers - person1, person2'
+    description: "Individual Reviewers - person1, person2. If pick-one-from-persons-or-team is true, only 1 person from this list will be picked."
+    required: false
+  org:
+    description: "Org (only required if using teams in pick-one-from-persons-or-team)"
+    required: false
+  pick-one-from-persons-or-team:
+    description: "If the pick-one-from-persons-or-team is True, only 1 person from the first team and/or persons will be picked."
     required: false
   include-draft:
-    description: 'If set to true, DRAFT PRs will also be covered (default=false)'
+    description: "If set to true, DRAFT PRs will also be covered (default=false)"
     required: false
   skip-with-manual-reviewers:
-    description: 'If the given nubmer of reviewers is already assigned, auto assign will be skipped'
+    description: "If the given nubmer of reviewers is already assigned, auto assign will be skipped"
     required: false
 
 runs:
-  using: 'node12'
-  main: 'lib/index.js'
+  using: "node12"
+  main: "lib/index.js"
