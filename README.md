@@ -23,3 +23,10 @@ jobs:
         include-draft: false            # Draft PRs will be skipped (default: false)
         skip-with-manual-reviewers: 0   # Skip this action, if the number of reviwers was already assigned (default: 0)
 ```
+
+## Build
+```shell
+npm run build
+git add lib
+git commit -a -m "prod dependencies"
+```
