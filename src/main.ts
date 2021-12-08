@@ -147,8 +147,9 @@ export async function run() {
         );
       }
     }
-  } catch (error:any) {
-    core.setFailed(error);
+  } catch (error) {
+    console.error(error)
+    core.setFailed("Unknown error" + error);
     throw error;
   }
 }
