@@ -15,10 +15,10 @@ export async function run() {
     }
 
     //See https://octokit.github.io/rest.js/
-    const client = new github.GitHub(repoToken)
+    const client = github.getOctokit(repoToken)
 
     const includeDraft : Boolean =  Boolean(core.getInput('include-draft') || false) 
-    const pull = await client.pulls.get(
+    const pull = await client.rest.pulls.get(
       {
         owner: issue.owner,
         repo: issue.repo,
@@ -53,7 +53,7 @@ export async function run() {
 
     if(persons.length > 0) {
       console.log("Adding persons: " + persons)
-      const personResponse = await client.pulls.createReviewRequest(
+      const personResponse = await client.rest.pulls.requestReviewers(
           {
             owner: issue.owner,
             repo: issue.repo,
@@ -66,7 +66,7 @@ export async function run() {
 
     if(teams.length > 0) {
       console.log("Adding teams: " + teams)
-      const teamResponse = await client.pulls.createReviewRequest(
+      const teamResponse = await client.rest.pulls.requestReviewers(
           {
             owner: issue.owner,
             repo: issue.repo,
@@ -76,8 +76,8 @@ export async function run() {
       )
       console.log("Request Status:" + teamResponse.status + ", Teams: " + teamResponse?.data?.requested_teams?.map(t => t.slug).join(','))
     }
-  } catch (error) {
-    core.setFailed(error.message)
+  } catch (error:any) {
+    core.setFailed(error)
     throw error
   }
 }
