@@ -27,3 +27,10 @@ jobs:
           skip-with-manual-reviewers: 0 # Skip this action, if the number of reviwers was already assigned (default: 0)
           pick-one-from-persons-or-team: true # Will pick out one reviewer from persons and/or the first Github team (default: false)
 ```
+
+## Build
+```shell
+npm run build
+git add lib
+git commit -a -m "prod dependencies"
+```
