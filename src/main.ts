@@ -23,7 +23,7 @@ export async function run() {
     const includeDraft: Boolean = Boolean(
       core.getInput("include-draft") || false
     );
-    const pull = await client.pulls.get({
+    const pull = await client.rest.pulls.get({
       owner: issue.owner,
       repo: issue.repo,
       pull_number: issue.number,
@@ -71,7 +71,7 @@ export async function run() {
         : persons;
       console.log("Adding person(s): " + reviewers);
 
-      const personResponse = await client.pulls.requestReviewers({
+      const personResponse = await client.rest.pulls.requestReviewers({
         owner: issue.owner,
         repo: issue.repo,
         pull_number: issue.number,
@@ -133,7 +133,7 @@ export async function run() {
         );
       } else {
         console.log("Adding teams: " + teams);
-        const teamResponse = await client.pulls.requestReviewers({
+        const teamResponse = await client.rest.pulls.requestReviewers({
           owner: issue.owner,
           repo: issue.repo,
           pull_number: issue.number,
@@ -147,8 +147,8 @@ export async function run() {
         );
       }
     }
-  } catch (error) {
-    core.setFailed(error.message);
+  } catch (error:any) {
+    core.setFailed(error);
     throw error;
   }
 }
