@@ -1,5 +1,6 @@
 import * as core from "@actions/core";
 import * as github from "@actions/github";
+import {getBooleanInput} from "@actions/core";
 
 export async function run() {
   try {
@@ -8,9 +9,8 @@ export async function run() {
         github.context.issue;
     core.setSecret(repoToken);
 
-    const pickOneFromPersonsOrTeam: Boolean = Boolean(
-      core.getInput("pick-one-from-persons-or-team") || false
-    );
+    const pickOneFromPersonsOrTeam =
+      core.getBooleanInput("pick-one-from-persons-or-team");
 
     if (issue == null || issue.number == null) {
       console.log("No pull request context, skipping");
@@ -20,9 +20,8 @@ export async function run() {
     //See https://octokit.github.io/rest.js/
     const client = github.getOctokit(repoToken);
 
-    const includeDraft: Boolean = Boolean(
-      core.getInput("include-draft") || false
-    );
+    const includeDraft = core.getBooleanInput("include-draft");
+
     const pull = await client.rest.pulls.get({
       owner: issue.owner,
       repo: issue.repo,
