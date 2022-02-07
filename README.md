@@ -30,7 +30,5 @@ jobs:
 
 ## Build
 ```shell
-npm run package
-git add lib
-git commit -a -m "prod dependencies"
+npm run build &&  npm run package
 ```
