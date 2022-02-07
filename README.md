@@ -25,7 +25,7 @@ jobs:
           persons: "rowi1de" # add individual persons here
           include-draft: false # Draft PRs will be skipped (default: false)
           skip-with-manual-reviewers: 0 # Skip this action, if the number of reviwers was already assigned (default: 0)
-          pick-one-from-persons-or-team: true # Will pick out one reviewer from persons and/or the first GitHub team and "org" set (default: false)
+          pick-one-from-persons-or-team: false # Will pick out one reviewer from persons and/or the first GitHub team and "org" set (default: false)
 ```
 
 ## Build
