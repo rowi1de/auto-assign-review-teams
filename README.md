@@ -17,7 +17,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: "Assign Team and Persons"
-        uses: rowi1de/auto-assign-review-teams@v1.1.1
+        uses: rowi1de/auto-assign-review-teams@v1.1.2
         with:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
           org: "github-org" #only needed for  pick-one-from-persons-or-team=true
