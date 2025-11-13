@@ -39,7 +39,7 @@
     "eslint-plugin-github": "^6.0.0",
     "eslint-plugin-jest": "^27.9.0",
     "jest": "^27.5.1",
-    "js-yaml": "^4.1.0",
+    "js-yaml": "^4.1.1",
     "nock": "^13.5.6",
     "prettier": "3.6.2",
     "ts-jest": "^27.1.4",
