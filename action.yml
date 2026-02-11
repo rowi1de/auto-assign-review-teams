@@ -10,7 +10,7 @@ inputs:
     required: true
   teams:
     description: "Teams (works best with Auto Assignment) - team1, team 2.  If pick-one-from-persons-or-team is true, only 1 person from the first team will be picked."
-    required: true
+    required: false
   persons:
     description: "Individual Reviewers - person1, person2. If pick-one-from-persons-or-team is true, only 1 person from this list will be picked."
     required: false
@@ -20,13 +20,15 @@ inputs:
   pick-one-from-persons-or-team:
     description: "If the pick-one-from-persons-or-team is True, only 1 person from the first team and/or persons will be picked."
     required: false
+    default: "false"
   include-draft:
     description: "If set to true, DRAFT PRs will also be covered (default=false)"
     required: false
+    default: "false"
   skip-with-manual-reviewers:
-    description: "If the given nubmer of reviewers is already assigned, auto assign will be skipped"
+    description: "If the given number of reviewers is already assigned, auto assign will be skipped"
     required: false
 
 runs:
-  using: "node12"
+  using: "node20"
   main: "dist/index.js"
