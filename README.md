@@ -17,18 +17,32 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: "Assign Team and Persons"
-        uses: rowi1de/auto-assign-review-teams@v1.1.3
+        uses: rowi1de/auto-assign-review-teams@v1.2.0
         with:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
-          org: "github-org" #only needed for  pick-one-from-persons-or-team=true
-          teams: "gitub-org-team" # only works for GitHub Organisation/Teams
+          teams: "github-org-team" # only works for GitHub Organisation/Teams
           persons: "rowi1de" # add individual persons here
           include-draft: false # Draft PRs will be skipped (default: false)
-          skip-with-manual-reviewers: 0 # Skip this action, if the number of reviwers was already assigned (default: 0)
+          skip-with-manual-reviewers: 0 # Skip this action, if the number of reviewers was already assigned (default: 0)
           pick-one-from-persons-or-team: false # Will pick out one reviewer from persons and/or the first GitHub team and "org" set (default: false)
+          org: "github-org" # only needed for pick-one-from-persons-or-team=true
 ```
+
+## Permissions for Team Assignment
+
+When using the `teams` input, the default `GITHUB_TOKEN` may not have sufficient permissions to resolve team slugs. If you get a `"Could not resolve to a node"` validation error, you need to use a **Personal Access Token (PAT)** or a **GitHub App token** instead:
+
+- **PAT**: Create a token with `repo` scope and store it as a repository secret
+- **GitHub App**: Grant read-only access to **Organization Members**
+
+```yaml
+repo-token: ${{ secrets.PAT_TOKEN }}  # use PAT instead of GITHUB_TOKEN
+teams: "my-team"
+```
+
+Use the team slug (e.g. `my-team`) without the org prefix. The org prefix is only needed in the `org` input when using `pick-one-from-persons-or-team`.
 
 ## Build
 ```shell
-npm run build &&  npm run package
+npm run build && npm run package
 ```
