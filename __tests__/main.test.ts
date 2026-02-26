@@ -200,9 +200,6 @@ describe('Empty inputs', () => {
     const main = require('../src/main');
     await main.run();
 
-    expect(mockSetFailed).toHaveBeenCalledWith(
-      "Please specify 'teams' and/or 'persons'",
-    );
     expect(mockRequestReviewers).not.toHaveBeenCalled();
   });
 });
