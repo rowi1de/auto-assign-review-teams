@@ -65,7 +65,7 @@ export async function run() {
       // filter out PR creator
       .filter((user) => user !== prAuthor);
 
-    if (teams.length == 0 && persons.length == 0) {
+    if (teams.length === 0 && persons.length === 0) {
       core.setFailed("Please specify 'teams' and/or 'persons'");
       return;
     }
@@ -124,6 +124,11 @@ export async function run() {
           'Picking reviewer from eligible members:',
           eligibleMembers,
         );
+
+        if (eligibleMembers.length === 0) {
+          console.log('No eligible team members to assign');
+          return;
+        }
 
         const person = [
           eligibleMembers[Math.floor(Math.random() * eligibleMembers.length)],

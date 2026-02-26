@@ -23,6 +23,10 @@ const mockGetOctokit = github.getOctokit as jest.MockedFunction<
   typeof github.getOctokit
 >;
 
+beforeEach(() => {
+  jest.clearAllMocks();
+});
+
 function setupMocks(inputs: Record<string, string>) {
   mockGetInput.mockImplementation((name: string) => inputs[name] || '');
   mockGetBooleanInput.mockImplementation(
