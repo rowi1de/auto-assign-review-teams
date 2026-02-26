@@ -32,7 +32,7 @@ jobs:
 
 When using the `teams` input, the default `GITHUB_TOKEN` may not have sufficient permissions to resolve team slugs. If you get a `"Could not resolve to a node"` validation error, you need to use a **Personal Access Token (PAT)** or a **GitHub App token** instead:
 
-- **PAT**: Create a token with `repo` scope and store it as a repository secret
+- **PAT**: Create a token with `repo` and `read:org` scopes and store it as a repository secret
 - **GitHub App**: Grant read-only access to **Organization Members**
 
 ```yaml
