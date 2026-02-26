@@ -65,7 +65,9 @@ export async function run() {
         .filter((user) => user !== issue.owner);
 
     if (teams.length == 0 && persons.length == 0) {
-      core.setFailed('Please specify \'teams\' and/or \'persons\'');
+      console.log(
+          'No eligible reviewers: teams and persons are empty ' +
+          '(PR author is excluded from persons)');
       return;
     }
 
