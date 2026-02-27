@@ -125,8 +125,8 @@ function run() {
             // Making sure that org is provided
             // if user turns on pick-one-from-persons-or-team
             // option and to use teams
-            const org = core.getInput('org');
-            if (pickOneFromPersonsOrTeam && teams.length > 0 && org == null) {
+            const org = core.getInput('org').trim();
+            if (pickOneFromPersonsOrTeam && teams.length > 0 && !org) {
                 core.setFailed("Please specify 'org' if you want to " +
                     'pick one from persons or teams and use Teams');
                 return;

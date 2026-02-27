@@ -184,7 +184,7 @@ describe('PR author filtering', () => {
 });
 
 describe('Empty inputs', () => {
-  it('fails when both teams and persons are empty', async () => {
+  it('skips when both teams and persons are empty', async () => {
     setupMocks({
       'repo-token': 'token',
       teams: '',
