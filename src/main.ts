@@ -1,17 +1,16 @@
 import * as core from '@actions/core';
 import * as github from '@actions/github';
 
-// eslint-disable-next-line require-jsdoc
 export async function run() {
   try {
     const repoToken = core.getInput('repo-token', {required: true});
-    const issue: { owner: string; repo: string; number: number } =
+    const issue: {owner: string; repo: string; number: number} =
       github.context.issue;
     core.setSecret(repoToken);
 
     const pickOneFromPersonsOrTeam = core.getBooleanInput(
-        'pick-one-from-persons-or-team',
-        {required: false},
+      'pick-one-from-persons-or-team',
+      {required: false},
     );
 
     if (issue == null || issue.number == null) {
@@ -39,39 +38,46 @@ export async function run() {
     }
 
     const skipWithNumberOfReviewers: number = Number(
-        core.getInput('skip-with-manual-reviewers') || Number.MAX_VALUE,
+      core.getInput('skip-with-manual-reviewers') || Number.MAX_VALUE,
     );
     const numberOfReviewers = pull.data.requested_reviewers?.length || 0;
     if (numberOfReviewers >= skipWithNumberOfReviewers) {
       console.log(
-          'Skipped: Already ' +
+        'Skipped: Already ' +
           numberOfReviewers +
           ' assigned reviewers, not assigning PR.',
       );
       return;
     }
 
-    const teams = core
-        .getInput('teams')
-        .split(',')
-        .map((a) => a.trim());
-    const persons = core
-        .getInput('persons')
-        .split(',')
-    // filter out PR creator
-        .filter((user) => user !== issue.owner)
-        .map((a) => a.trim());
+    const prAuthor = pull.data.user?.login;
 
-    if (teams.length == 0 && persons.length == 0) {
-      core.setFailed('Please specify \'teams\' and/or \'persons\'');
+    const teams = core
+      .getInput('teams')
+      .split(',')
+      .map((a) => a.trim())
+      .filter((a) => a.length > 0);
+    const persons = core
+      .getInput('persons')
+      .split(',')
+      .map((a) => a.trim())
+      .filter((a) => a.length > 0)
+      // filter out PR creator
+      .filter((user) => user !== prAuthor);
+
+    if (teams.length === 0 && persons.length === 0) {
+      console.log(
+        'No eligible reviewers: teams and persons are empty ' +
+          '(PR author is excluded from persons)',
+      );
       return;
     }
 
     if (persons.length > 0) {
       console.log('Picking from: ' + persons);
-      const reviewers = pickOneFromPersonsOrTeam ?
-        [persons[Math.floor(Math.random() * persons.length)]] :
-        persons;
+      const reviewers = pickOneFromPersonsOrTeam
+        ? [persons[Math.floor(Math.random() * persons.length)]]
+        : persons;
       console.log('Adding person(s): ' + reviewers);
 
       const personResponse = await client.rest.pulls.requestReviewers({
@@ -81,22 +87,22 @@ export async function run() {
         reviewers: reviewers,
       });
       console.log(
-          'Request Status:' +
+        'Request Status:' +
           personResponse.status +
           ', Persons: ' +
           personResponse?.data?.requested_reviewers
-              ?.map((r) => r.login)
-              .join(','),
+            ?.map((r) => r.login)
+            .join(','),
       );
     }
 
     // Making sure that org is provided
     // if user turns on pick-one-from-persons-or-team
     // option and to use teams
-    const org: string = core.getInput('org');
-    if (pickOneFromPersonsOrTeam && teams.length > 0 && org == null) {
+    const org: string = core.getInput('org').trim();
+    if (pickOneFromPersonsOrTeam && teams.length > 0 && !org) {
       core.setFailed(
-          'Please specify \'org\' if you want to ' +
+        "Please specify 'org' if you want to " +
           'pick one from persons or teams and use Teams',
       );
       return;
@@ -111,13 +117,21 @@ export async function run() {
           team_slug: teams[0],
         });
         console.log(
-            'Request Status for getting team members:' + members.status,
+          'Request Status for getting team members:' + members.status,
         );
         // filter out PR author
         const eligibleMembers = members.data
-            .filter((user) => user.login !== pull.data.user?.login)
-            .map((a) => a.login);
-        console.log('Picking reviewer from eligible members:', eligibleMembers);
+          .filter((user) => user.login !== prAuthor)
+          .map((a) => a.login);
+        console.log(
+          'Picking reviewer from eligible members:',
+          eligibleMembers,
+        );
+
+        if (eligibleMembers.length === 0) {
+          console.log('No eligible team members to assign');
+          return;
+        }
 
         const person = [
           eligibleMembers[Math.floor(Math.random() * eligibleMembers.length)],
@@ -130,12 +144,12 @@ export async function run() {
         });
 
         console.log(
-            'Request Status:' +
+          'Request Status:' +
             personResponse.status +
             ', Person from First Team: ' +
             personResponse?.data?.requested_reviewers
-                ?.map((r) => r.login)
-                .join(','),
+              ?.map((r) => r.login)
+              .join(','),
         );
       } else {
         console.log('Adding teams: ' + teams);
@@ -146,7 +160,7 @@ export async function run() {
           team_reviewers: teams,
         });
         console.log(
-            'Request Status:' +
+          'Request Status:' +
             teamResponse.status +
             ', Teams: ' +
             teamResponse?.data?.requested_teams?.map((t) => t.slug).join(','),
