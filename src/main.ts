@@ -62,7 +62,7 @@ export async function run() {
         .map((a) => a.trim())
         .filter((a) => a.length > 0)
     // filter out PR creator
-        .filter((user) => user !== issue.owner);
+        .filter((user) => user !== pull.data.user?.login);
 
     if (teams.length == 0 && persons.length == 0) {
       console.log(

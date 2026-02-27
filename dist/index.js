@@ -89,7 +89,7 @@ function run() {
                 .map((a) => a.trim())
                 .filter((a) => a.length > 0)
                 // filter out PR creator
-                .filter((user) => user !== issue.owner);
+                .filter((user) => { var _a; return user !== ((_a = pull.data.user) === null || _a === void 0 ? void 0 : _a.login); });
             if (teams.length == 0 && persons.length == 0) {
                 console.log('No eligible reviewers: teams and persons are empty ' +
                     '(PR author is excluded from persons)');

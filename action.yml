@@ -26,7 +26,7 @@ inputs:
     required: false
     default: "false"
   skip-with-manual-reviewers:
-    description: "If the given nubmer of reviewers is already assigned, auto assign will be skipped"
+    description: "If the given number of reviewers is already assigned, auto assign will be skipped"
     required: false
 
 runs:
