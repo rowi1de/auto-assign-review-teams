@@ -56,10 +56,14 @@ Expected: installs cleanly, no `ERESOLVE` errors (there are no peer-dependency c
 - [ ] **Step 3: Confirm the expected-broken state**
 
 Run: `npm run build`
-Expected: **succeeds** (tsc's classic module resolution doesn't validate the ESM/CJS runtime boundary, so this compiles without error even though it will crash at runtime — this is the known trap, not a bug to fix in this task).
+Expected: **fails** with TypeScript compile errors, something like:
+```
+node_modules/@actions/github/lib/github.d.ts(3,52): error TS2307: Cannot find module '@octokit/core/types'
+node_modules/@octokit/request-error/dist-types/types.d.ts(2,46): error TS2304: Cannot find name 'ErrorOptions'.
+```
+This happens because `tsconfig.json` still has classic/default `moduleResolution` and `target: es6` at this point in the plan — it can't resolve `@octokit/core`'s `./types` subpath export or find the `ErrorOptions` type (introduced in ES2022 lib). This is expected and will be fixed by Task 2's tsconfig changes, not by anything in this task. Do not modify `tsconfig.json` in this task — just confirm the build fails with (approximately) these errors and move on; Task 2 fixes them.
 
-Run: `node lib/main.js` (after `npm run build`, without any env vars)
-Expected: crashes with `Error [ERR_PACKAGE_PATH_NOT_EXPORTED]: No "exports" main defined in .../node_modules/@actions/core/package.json` — this confirms the ESM-only runtime break exists before we fix it in Task 2. Do not attempt to fix this in this task.
+Do not attempt to run `node lib/main.js` in this task — since `npm run build` fails, no `lib/main.js` is produced yet. The runtime `ERR_PACKAGE_PATH_NOT_EXPORTED` check happens naturally in Task 3 once the build succeeds again.
 
 - [ ] **Step 4: Commit**
 
@@ -189,9 +193,11 @@ The full compilerOptions block should read (comments preserved, only the four li
     // "experimentalDecorators": true,        /* Enables experimental support for ES7 decorators. */
     // "emitDecoratorMetadata": true,         /* Enables experimental support for emitting type metadata for decorators. */
   },
-  "exclude": ["node_modules", "**/*.test.ts"]
+  "exclude": ["node_modules", "**/*.test.ts", "__mocks__"]
 }
 ```
+
+**Correction discovered during execution:** the `exclude` list above includes `"__mocks__"`, which was NOT in the original version of this plan. Without it, `tsc` fails with `TS6059: File '.../__mocks__/@actions/core.ts' is not under 'rootDir' './src'` once Task 4 creates `__mocks__/@actions/core.ts` and `__mocks__/@actions/github.ts` — `tsconfig.json` has no explicit `include`, so TypeScript defaults to including every `.ts` file under the project root, then subtracts `exclude`; the `__mocks__/*.ts` files don't match `**/*.test.ts` so they leaked into the program and violated `rootDir: "./src"`. This only surfaces once Task 4's mock files exist, so Task 2's own verification (Step 4, which only has `src/main.ts` with static imports at that point) does not catch it — add `"__mocks__"` to `exclude` now, in Task 2, so Task 4 and Task 5 don't hit it later. (`tsconfig.test.json`'s own `include: ["src", "__tests__"]` in Step 3 below is unaffected either way, since `ts-jest` compiles files individually rather than as a whole-program build.)
 
 - [ ] **Step 3: Create `tsconfig.test.json`**
 
