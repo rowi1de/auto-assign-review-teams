@@ -1,7 +1,6 @@
-import * as core from '@actions/core';
-import * as github from '@actions/github';
-
 export async function run() {
+  const core = await import('@actions/core');
+  const github = await import('@actions/github');
   try {
     const repoToken = core.getInput('repo-token', {required: true});
     const issue: {owner: string; repo: string; number: number} =
